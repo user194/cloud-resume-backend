@@ -1,0 +1,12 @@
+# Ignore local Terraform directories and state files
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+
+# Ignore local zip archives
+*.zip
