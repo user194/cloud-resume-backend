@@ -1,0 +1,39 @@
+steps:
+  # 1. Run Python Unit Tests
+  - name: 'python:3.10-slim'
+    id: 'Run Unit Tests'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        pip install -r requirements.txt -r requirements-test.txt
+        pytest test_main.py
+
+  # 2. Build the Container and Publish it to Artifact Registry (No Dockerfile needed!)
+  - name: 'gcr.io/k8s-skaffold/pack'
+    id: 'Build & Push Container'
+    args:
+      - 'build'
+      - 'us-central1-docker.pkg.dev/thecloudresumechallenge/cloud-run-source-deploy/thecloudresumechallenge-counter-api:$SHORT_SHA'
+      - '--builder'
+      - 'gcr.io/buildpacks/builder:v1'
+      - '--path'
+      - '.'
+      - '--publish'
+
+  # 3. Initialize Terraform
+  - name: 'hashicorp/terraform:1.5.0'
+    id: 'Terraform Init'
+    args: ['init']
+
+  # 4. Apply Terraform and pass the unique Build SHA
+  - name: 'hashicorp/terraform:1.5.0'
+    id: 'Terraform Apply'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        terraform apply -auto-approve -var="image_tag=$SHORT_SHA"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
