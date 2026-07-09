@@ -12,6 +12,11 @@ provider "google" {
   region  = "us-central1"
 }
 
+variable "image_tag" {
+  type    = string
+  default = "latest"
+}
+
 # 1. Reference your existing Firestore Database (or create it via code)
 resource "google_firestore_database" "database" {
   project     = "thecloudresumechallenge"
@@ -32,7 +37,7 @@ resource "google_cloud_run_v2_service" "counter_api" {
       min_instance_count = 0
     }
     containers {
-      image = "us-central1-docker.pkg.dev/thecloudresumechallenge/cloud-run-source-deploy/thecloudresumechallenge-counter-api:latest"
+      image = "us-central1-docker.pkg.dev/thecloudresumechallenge/cloud-run-source-deploy/thecloudresumechallenge-counter-api:${var.image_tag}"
       env {
         name  = "GOOGLE_FUNCTION_TARGET"
         value = "visitor_counter"
