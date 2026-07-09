@@ -45,15 +45,6 @@ resource "google_cloud_run_v2_service" "counter_api" {
     }
     containers {
       image = "us-central1-docker.pkg.dev/thecloudresumechallenge/cloud-run-source-deploy/thecloudresumechallenge-counter-api:${var.image_tag}"
-      env {
-        name  = "GOOGLE_FUNCTION_TARGET"
-        value = "visitor_counter"
-      }
-
-      env {
-        name  = "GOOGLE_FUNCTION_SIGNATURE_TYPE"
-        value = "http"
-      }
     }
   }
 }

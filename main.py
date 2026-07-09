@@ -19,7 +19,8 @@ def visitor_counter(request):
 
     # Set standard CORS headers for the actual response
     headers = {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
     }
 
     try:
@@ -38,7 +39,7 @@ def visitor_counter(request):
             new_count = current_count + 1
             
             # Write the incremented number back to Firestore
-            transaction.update(doc_ref, {'count': new_count})
+            transaction.set(doc_ref, {'count': new_count})
             return new_count
 
         # Execute the transaction
@@ -51,3 +52,8 @@ def visitor_counter(request):
     except Exception as e:
         print(f"Error updating counter: {e}")
         return ({"error": "Internal Server Error"}, 500, headers)
+
+app = functions_framework.create_app(
+    target="visitor_counter",
+    signature_type="http",
+)
