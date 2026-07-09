@@ -6,7 +6,7 @@ import main
 class TestCounterAPI(unittest.TestCase):
 
     @patch('main.db')  # This mocks your Firestore database connection so the test doesn't write to your real DB!
-    def test_hello_http_success(self, mock_db):
+    def test_visitor_counter_success(self, mock_db):
         # 1. Setup our mock database response simulation
         mock_doc = MagicMock()
         mock_doc.exists = True
