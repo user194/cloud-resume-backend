@@ -33,10 +33,15 @@ resource "google_cloud_run_v2_service" "counter_api" {
     }
     containers {
       image = "us-central1-docker.pkg.dev/thecloudresumechallenge/cloud-run-source-deploy/thecloudresumechallenge-counter-api:latest"
-      
-      # Add these lines to fix the Port 8080 error:
-      command = ["python3"]
-      args    = ["-m", "functions_framework", "--target=hello_http", "--port=8080"]
+      env {
+        name  = "GOOGLE_FUNCTION_TARGET"
+        value = "visitor_counter"
+      }
+
+      env {
+        name  = "GOOGLE_FUNCTION_SIGNATURE_TYPE"
+        value = "http"
+      }
     }
   }
 }
@@ -48,3 +53,10 @@ resource "google_cloud_run_v2_service_iam_member" "public_access" {
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
+
+# 4. Allow Cloud Datastore User role to Cloud Run service account
+resource "google_project_iam_member" "counter_api_firestore_access" {
+  project = "thecloudresumechallenge"
+  role    = "roles/datastore.user"
+  member  = "serviceAccount:552136933494-compute@developer.gserviceaccount.com"
+} 

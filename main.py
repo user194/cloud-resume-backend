@@ -6,7 +6,7 @@ from google.cloud import firestore
 db = firestore.Client()
 
 @functions_framework.http
-def hello_http(request):
+def visitor_counter(request):
     # 1. Handle CORS Preflight Requests
     if request.method == 'OPTIONS':
         headers = {
