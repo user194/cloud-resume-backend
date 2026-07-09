@@ -21,7 +21,7 @@ class TestCounterAPI(unittest.TestCase):
             from flask import request
             
             # 3. Call your function logic
-            response, status_code, headers = main.hello_http(request)
+            response, status_code, headers = main.visitor_counter(request)
 
             # 4. Assertions (verify the results match expectations)
             self.assertEqual(status_code, 200)
@@ -34,7 +34,7 @@ class TestCounterAPI(unittest.TestCase):
         app = flask.Flask('test_app')
         with app.test_request_context(method='OPTIONS'):
             from flask import request
-            response, status_code, headers = main.hello_http(request)
+            response, status_code, headers = main.visitor_counter(request)
             
             self.assertEqual(status_code, 204)
             self.assertEqual(headers.get('Access-Control-Allow-Methods'), 'GET, POST, OPTIONS')
