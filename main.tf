@@ -1,4 +1,11 @@
 terraform {
+  backend "gcs" {
+    bucket = "thecloudresumechallenge-terraform-state" 
+    prefix = "terraform/state"
+  }
+}
+
+terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
