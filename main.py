@@ -52,8 +52,3 @@ def visitor_counter(request):
     except Exception as e:
         print(f"Error updating counter: {e}")
         return ({"error": "Internal Server Error"}, 500, headers)
-
-app = functions_framework.create_app(
-    target="visitor_counter",
-    signature_type="http",
-)
