@@ -35,8 +35,8 @@ resource "google_cloud_run_v2_service" "counter_api" {
       image = "us-central1-docker.pkg.dev/thecloudresumechallenge/cloud-run-source-deploy/thecloudresumechallenge-counter-api:latest"
       
       # Add these lines to fix the Port 8080 error:
-      command = ["functions-framework"]
-      args    = ["--target=hello_http", "--port=8080"]
+      command = ["python3"]
+      args    = ["-m", "functions_framework", "--target=hello_http", "--port=8080"]
     }
   }
 }
